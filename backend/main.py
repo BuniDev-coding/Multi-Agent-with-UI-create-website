@@ -154,6 +154,7 @@ async def serve_index():
 
 # Mount static files
 app.mount("/static", StaticFiles(directory=str(frontend_dir)), name="static")
+app.mount("/public", StaticFiles(directory=str(Path(__file__).parent.parent / "public")), name="public")
 
 
 if __name__ == "__main__":

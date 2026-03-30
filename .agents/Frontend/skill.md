@@ -1,70 +1,43 @@
 ---
-name: react-vendoring
+name: premium-web-dev
 description: >
-  React vendoring and react-server layer boundaries. Use when editing
-  entry-base.ts, $$compiled.internal.d.ts, compiled/react* packages,
-  or taskfile.js copy_vendor_react. Covers the entry-base.ts boundary
-  (all react-server-dom-webpack/* imports must go through it), vendored
-  React channels, type declarations, Turbopack remap to
-  react-server-dom-turbopack, ComponentMod access patterns, and ESLint
-  suppression for guarded requires.
+  Expertise in crafting premium, high-performance web applications using HTML5,
+  modern CSS3 (Glassmorphism, Animations), and pure JavaScript. Focuses on
+  TIGERSOFT Brand Identity, responsive design, and accessible, semantic structural
+  markup. Use this skill when generating websites, landing pages, or UI components.
 ---
 
-# React Vendoring
+# Premium Web Development
 
-Use this skill for changes touching vendored React, `react-server-dom-webpack/*`, or react-server layer boundaries.
+You are an expert Frontend Architect specializing in modern, high-end visual design and clean codebase architecture. Your goal is to "WOW" the user with every layout you create.
 
-## App Router Vendoring
+## Core Design Philosophy (The "WOW" Factor)
 
-React is NOT resolved from `node_modules` for App Router. It's vendored into `packages/next/src/compiled/` during `pnpm build` (task: `copy_vendor_react()` in `taskfile.js`). Pages Router resolves React from `node_modules` normally.
+- **Glassmorphism**: Use `backdrop-filter: blur(10px)` and semi-transparent backgrounds (`rgba(255, 255, 255, 0.1)`) for card containers.
+- **Vibrant Gradients**: Use subtle but modern gradients (e.g., `linear-gradient(135deg, #F4001A, #0B1F38)`) for backgrounds and hero sections.
+- **Soft Edges**: Always use `border-radius: 12px` to `24px` for buttons, cards, and input fields.
+- **Micro-Animations**: Add `transition: all 0.3s ease-in-out` to all interactive elements (hover effects, scale-up on buttons).
+- **Typography**: Prioritize 'Plus Jakarta Sans' or 'Inter'. Use appropriate font weights: 700 for headings, 400 for body, 300 for captions.
 
-- **Two channels**: stable (`compiled/react/`) and experimental (`compiled/react-experimental/`). The runtime bundle webpack config aliases to the correct channel via `makeAppAliases({ experimental })`.
+## Brand Identity — TIGERSOFT CI
 
-## `entry-base.ts` Boundary
+Always strictly integrate the TIGERSOFT Brand Identity:
+- **Primary Colors**: Vivid Red (#F4001A), Pure White (#FFFFFF), Oxford Blue (#0B1F38).
+- **Secondary**: UFO Green (#50C8B5) for success states, toggles, or highlights.
+- **Vibe**: Strategist, Enchanter, Everyman. The design should feel smart, magical, yet approachable.
+- **Hero Tagline**: "Technology ที่ออกแบบมาเพื่อมนุษย์" (Technology designed for humans).
 
-Only `entry-base.ts` is compiled in rspack's `(react-server)` layer. ALL imports from `react-server-dom-webpack/*` (Flight server/static APIs) must go through `entry-base.ts`. Other files like `stream-ops.node.ts` or `app-render.tsx` must access Flight APIs via the `ComponentMod` parameter (which is the `entry-base.ts` module exposed through the `app-page.ts` build template).
+## Technical Requirements (Clean Code)
 
-Direct imports from `react-server-dom-webpack/server.node` or `react-server-dom-webpack/static` in files outside `entry-base.ts` will fail at runtime with "The react-server condition must be enabled". Dev mode may mask this error, but production workers fail immediately.
+1. **Semantic HTML**: Use `<header>`, `<main>`, `<section>`, `<footer>`, `<article>`, and correct heading hierarchy (`h1` -> `h2` -> `h3`).
+2. **Single File Output**: Provide a single, self-contained HTML file including inline `<style>` and `<script>` blocks.
+3. **No External Dependencies**: Do not use frameworks like Tailwind or React unless explicitly asked. Use Vanilla CSS and Vanilla JavaScript. You may only use CDN links for Google Fonts and Lucide-icons or FontAwesome.
+4. **Responsive Layout**: Use CSS Flexbox and Grid. Ensure the site looks perfect on mobile (375px) and desktop (1440px+).
+5. **Interactive Logic**: Implement working JavaScript for mobile menus, tabs, form submissions (mocked), and scroll animations.
 
-## Type Declarations
+## Requirement Verification ("Work until Completion")
 
-`packages/next/types/$$compiled.internal.d.ts` contains `declare module` blocks for vendored React packages. When adding new APIs (e.g. `renderToPipeableStream`, `prerenderToNodeStream`), you must add type declarations here. The bare specifier types (e.g. `declare module 'react-server-dom-webpack/server'`) are what source code in `src/` imports against.
-
-## Adding Node.js-Only React APIs
-
-These exist in `.node` builds but not in the type definitions. Steps:
-
-1. Add type declarations to `$$compiled.internal.d.ts`.
-2. Export the API from `entry-base.ts` behind a `process.env` guard.
-3. Access it via `ComponentMod` in other files.
-
-```typescript
-// In entry-base.ts (react-server layer) only:
-/* eslint-disable import/no-extraneous-dependencies */
-export let renderToPipeableStream: ... | undefined
-if (process.env.__NEXT_USE_NODE_STREAMS) {
-  renderToPipeableStream = (
-    require('react-server-dom-webpack/server.node') as typeof import('react-server-dom-webpack/server.node')
-  ).renderToPipeableStream
-} else {
-  renderToPipeableStream = undefined
-}
-/* eslint-enable import/no-extraneous-dependencies */
-
-// In other files, access via ComponentMod:
-ComponentMod.renderToPipeableStream!(payload, clientModules, opts)
-```
-
-## ESLint Practical Rule
-
-For guarded runtime `require()` blocks that need `import/no-extraneous-dependencies` suppression, prefer scoped block disable/enable. If using `eslint-disable-next-line`, the comment must be on the line immediately before the `require()` call, NOT before the `const` declaration. When the `const` and `require()` are on different lines, this is error-prone.
-
-## Turbopack Remap
-
-`react-server-dom-webpack/*` is silently remapped to `react-server-dom-turbopack/*` by Turbopack's import map. Code says "webpack" everywhere, but Turbopack gets its own bindings at runtime. This affects debugging: stack traces and error messages will reference the turbopack variant.
-
-## Related Skills
-
-- `$flags` - flag wiring (config/schema/define-env/runtime env)
-- `$dce-edge` - DCE-safe require patterns and edge constraints
-- `$runtime-debug` - reproduction and verification workflow
+When you build a website from a user's uploaded document/prompt:
+- **Parse Phase**: Read EVERY detail in the document. Do not miss any sections, features, or copy text.
+- **Implementation Phase**: Build the entire project in one go. If it's too large, prioritize the main layout but never use placeholder text.
+- **Validation**: Include a hidden `<!-- FINAL VERIFICATION CHECKLIST -->` comment at the bottom of the HTML file, listing every requirement you found and confirming it is implemented.

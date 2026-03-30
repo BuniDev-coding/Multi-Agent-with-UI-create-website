@@ -42,14 +42,14 @@
     const UPLOAD_URL = '/api/upload';
 
     const AGENT_ICONS = {
-        'PM Agent': 'https://cdn-icons-png.flaticon.com/512/3588/3588634.png', // Placeholder Cartoon PM
-        'R&D Agent': 'https://cdn-icons-png.flaticon.com/512/2103/2103633.png', // Placeholder Cartoon RD
-        'Frontend Agent': 'https://cdn-icons-png.flaticon.com/512/2721/2721614.png', // Placeholder Cartoon FE
-        'Backend Agent': 'https://cdn-icons-png.flaticon.com/512/2166/2166823.png', // Placeholder Cartoon BE
-        'Tester Agent': 'https://cdn-icons-png.flaticon.com/512/4233/4233830.png', // Placeholder Cartoon QA
-        'DevOps Agent': 'https://cdn-icons-png.flaticon.com/512/2103/2103611.png', // Placeholder Cartoon DevOps
-        'Consultant Agent': 'https://cdn-icons-png.flaticon.com/512/4140/4140037.png', // Placeholder Cartoon Consultant
-        'AI Agent': 'https://cdn-icons-png.flaticon.com/512/4712/4712035.png' // Default AI
+        'PM Agent': '/public/Image/1bc0608a3971b43b6213edbeb04fbc1d.jpg',
+        'R&D Agent': '/public/Image/4b0f5baf86364fd9a36c17f3b54d62a79d62ea1d.jpg',
+        'Frontend Agent': '/public/Image/3188d870220b0fb07ae4f84250198e79_2636008482012336615.jpg',
+        'Backend Agent': '/public/Image/4135fb60311b7b13cb438822d9086e78.jpg',
+        'Tester Agent': '/public/Image/c38ed290-a90c-4a04-bd5a-6afcc861e35f_sparkle_lighter_320x320px_alpha.gif',
+        'DevOps Agent': '/public/Image/Screenshot 2026-03-30 141241.png',
+        'Consultant Agent': '/public/Image/c8c004a91949a94086be5c130d769785.png',
+        'AI Agent': '/public/Image/cosmic-princess-kaguya-runami-yachiyo-hd-wallpaper-preview.jpg'
     };
 
     // --- File Upload ---
@@ -275,6 +275,33 @@
         return div.innerHTML;
     }
 
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    // --- State ---
+    let currentPreviewCode = '';
+
+    // --- Download Project ---
+    function downloadProject() {
+        if (!currentPreviewCode) {
+            alert('No project generated yet!');
+            return;
+        }
+
+        const blob = new Blob([currentPreviewCode], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'index.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', downloadProject);
+    }
+
     // --- HTML Code Extraction ---
 
     function extractHTMLCode(text) {
@@ -296,6 +323,7 @@
     // --- Preview Panel ---
 
     function showPreview(htmlCode) {
+        currentPreviewCode = htmlCode;
         previewPanel.classList.add('open');
         previewToggle.classList.add('active');
         previewPlaceholder.classList.add('hidden');
@@ -355,6 +383,7 @@
     function newChat() {
         chatHistory = [];
         lastGeneratedCode = '';
+        currentPreviewCode = '';
         clearAttachedFile();
         chatMessages.innerHTML = '';
 
